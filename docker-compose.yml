@@ -1,0 +1,43 @@
+services:
+  api:
+    build: .
+    ports:
+      - '3333:3333'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3333
+      - DB_CONNECTION=pg
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=adonis
+      - DB_PASSWORD=secret
+      - DB_DATABASE=adonis_app
+      - CHOKIDAR_USEPOLLING=true
+    command: ['node', 'ace', 'serve', '--watch']
+
+  db:
+    image: postgres:17
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: adonis
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: adonis_app
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - '8080:8080'
+
+volumes:
+  pgdata:
