@@ -13,6 +13,7 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import Sector from '#models/sector'
 import EmploymentStatus from '#models/employment_status'
+const UsersController = () => import('#controllers/users_controller')
 const HomeController = () => import('#controllers/home_controller')
 const SignInController = () => import('#controllers/sign_in_controller')
 
@@ -30,6 +31,9 @@ router.get('/home', [HomeController, 'index']).use(middleware.auth({ guards: ['a
 
 // ROUTER FOR THE COMPTE
 router.get('/me', [CompteController, 'show']).use(middleware.auth({ guards: ['api'] }))
+
+// ROUTER FOR THE USER
+router.get('/users', [UsersController, 'index'])
 
 // ROUTER FOR DIVERS DATA
 router.get('/sectors', async () => {

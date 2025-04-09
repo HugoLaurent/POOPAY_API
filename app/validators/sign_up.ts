@@ -6,7 +6,7 @@ export const SignUpValidator = vine.compile(
       table: 'users',
       column: 'username',
     }),
-    password: vine.string().minLength(8),
+    password: vine.string().minLength(4),
     age: vine.number().min(13).max(99),
     postalCode: vine.string().regex(/^\d{5}$/),
     monthlySalary: vine.number().min(0).max(100000),
