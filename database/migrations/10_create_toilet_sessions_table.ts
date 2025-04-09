@@ -18,7 +18,7 @@ export default class extends BaseSchema {
       table.timestamp('started_at', { useTz: true }).notNullable()
       table.timestamp('ended_at', { useTz: true }).notNullable()
 
-      table.integer('duration_minutes').notNullable()
+      table.integer('duration_seconds').notNullable()
       table.decimal('earned_amount', 10, 2).notNullable()
 
       table.timestamp('created_at', { useTz: true }).notNullable()

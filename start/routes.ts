@@ -13,15 +13,25 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import Sector from '#models/sector'
 import EmploymentStatus from '#models/employment_status'
+const HomeController = () => import('#controllers/home_controller')
 const SignInController = () => import('#controllers/sign_in_controller')
 
+//ROUTER FOR THE API
+
+// ROUTER FOR THE SESSION
 router.post('/session', [SessionController, 'store'])
 router.delete('/session', [SessionController, 'destroy']).use(middleware.auth({ guards: ['api'] }))
 
+// ROUTER FOR THE SIGN IN
 router.post('/register', [SignInController, 'register'])
 
+// ROUTER FOR THE HOMEPAGE
+router.get('/home', [HomeController, 'index']).use(middleware.auth({ guards: ['api'] }))
+
+// ROUTER FOR THE COMPTE
 router.get('/me', [CompteController, 'show']).use(middleware.auth({ guards: ['api'] }))
 
+// ROUTER FOR DIVERS DATA
 router.get('/sectors', async () => {
   const sectors = await Sector.all()
   return sectors
