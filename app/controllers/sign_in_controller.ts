@@ -1,24 +1,27 @@
 // app/controllers/session_controller.ts
 
 import User from '#models/user'
+import { SignUpValidator } from '#validators/sign_up'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class SignInController {
   async register({ request, response }: HttpContext) {
-    const body = request.only([
-      'username',
-      'password',
-      'age',
-      'postalCode',
-      'company',
-      'monthlySalary',
-      'monthlyHours',
-      'sectorId',
-      'statusId',
-    ])
+    const data = request.all()
+    const payload = await SignUpValidator.validate(data)
+    const { username, password, age, postalCode, monthlySalary, monthlyHours, sectorId, statusId } =
+      payload
 
     try {
-      await User.create(body)
+      await User.create({
+        username,
+        password,
+        age,
+        postalCode,
+        monthlySalary,
+        monthlyHours,
+        sectorId,
+        statusId,
+      })
 
       return response.ok({
         message: 'Compte créé avec succès',

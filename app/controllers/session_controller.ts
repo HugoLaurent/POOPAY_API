@@ -1,13 +1,15 @@
 // app/controllers/session_controller.ts
 
 import User from '#models/user'
+import { SessionValidator } from '#validators/session'
 import { HttpContext } from '@adonisjs/core/http'
 
 export default class SessionController {
   async store({ request, auth, response }: HttpContext) {
-    const { username, password } = request.only(['username', 'password'])
-    console.log('username', username)
-
+    const data = request.all()
+    const payload = await SessionValidator.validate(data)
+    console.log('Données validées:', payload)
+    const { username, password } = payload
     try {
       const user = await User.verifyCredentials(username, password)
       const token = await auth.use('api').createToken(user, ['*'], {
@@ -16,13 +18,15 @@ export default class SessionController {
 
       return {
         type: token.type,
-        token: token.value!.release(), // IMPORTANT : .release() pour l'envoyer côté client
+        token: token.value!.release(),
         user: {
           id: user.id,
           pseudo: user.username,
         },
       }
     } catch (err) {
+      console.log()
+
       return response.unauthorized({
         message: 'Identifiants invalides',
       })
