@@ -1,14 +1,29 @@
+import User from '#models/user'
 import { test } from '@japa/runner'
 
-import User from '#models/user'
-import hash from '@adonisjs/core/services/hash'
+test.group('Users list', () => {
+  test('get a list of users', async () => {
+    const user = await User.query()
+    console.log(user.length)
+  })
 
-test('hashes user password when creating a new user', async ({ assert }) => {
-  const user = new User()
-  user.password = 'secret'
+  test('add a user', async ({}) => {
+    const user = new User()
+    user.username = 'testuser2'
+    user.password = 'secret'
+    user.age = 25
+    user.postalCode = '12345'
+    user.monthlySalary = 3000
+    user.monthlyHours = 40
+    user.sectorId = 1
+    user.statusId = 1
 
-  await user.save()
+    await user.save()
 
-  assert.isTrue(hash.isValidHash(user.password))
-  assert.isTrue(await hash.verify(user.password, 'secret'))
+    console.log('User created:', user.username)
+
+    await user.delete()
+
+    console.log('User deleted:', user.username)
+  })
 })

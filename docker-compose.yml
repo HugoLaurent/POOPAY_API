@@ -1,11 +1,15 @@
 services:
   api:
     build: .
+    dns: 8.8.8.8  # Add this line
     ports:
       - '3333:3333'
     volumes:
       - .:/app
       - /app/node_modules
+    container_name: api
+    networks:
+      - my-network
     depends_on:
       - db
     environment:
@@ -26,8 +30,13 @@ services:
     restart: always
     ports:
       - '5432:5432'
+    container_name: db
+    networks:
+      - my-network
+    command: ["postgres", "-c", "listen_addresses=*"]
     environment:
       POSTGRES_USER: adonis
+      POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: adonis_app
     volumes:
@@ -38,6 +47,13 @@ services:
     restart: always
     ports:
       - '8080:8080'
+    container_name: adminer
+    networks:
+      - my-network
 
 volumes:
   pgdata:
+
+networks:
+  my-network:
+    driver: bridge
