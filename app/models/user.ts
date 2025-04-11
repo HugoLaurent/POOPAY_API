@@ -65,13 +65,19 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare ageRangeId: number // ← Ajouter la colonne ageRangeId
 
+  @column({ columnName: 'employment_status_id' })
+  declare employmentStatusId: number
+
+  @column({ columnName: 'region_id' })
+  declare regionId: number
+
   // 📎 Relations
 
   @belongsTo(() => Sector)
   declare sector: BelongsTo<typeof Sector>
 
-  @belongsTo(() => EmploymentStatus)
-  declare status: BelongsTo<typeof EmploymentStatus>
+  @belongsTo(() => EmploymentStatus, { foreignKey: 'statusId' })
+  declare employmentStatus: BelongsTo<typeof EmploymentStatus>
 
   @belongsTo(() => SalaryRange) // ← Relation vers SalaryRange
   declare salaryRange: BelongsTo<typeof SalaryRange> // ← Relation SalaryRange

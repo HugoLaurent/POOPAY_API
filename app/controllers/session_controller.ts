@@ -25,12 +25,18 @@ export default class SessionController {
         },
       }
     } catch (err) {
-      console.log()
-
       return response.unauthorized({
         message: 'Identifiants invalides',
       })
     }
+  }
+
+  async show({ auth, response }: HttpContext) {
+    const user = await auth.use('api').authenticate()
+    if (!user) {
+      return response.status(401).send({ message: 'Unauthorized' })
+    }
+    return response.status(200).send({ message: 'Authenticated' })
   }
 
   async destroy({ auth }: HttpContext) {

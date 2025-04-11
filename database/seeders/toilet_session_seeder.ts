@@ -9,7 +9,7 @@ export default class extends BaseSeeder {
 
     for (const user of users) {
       const hourlyRate = user.monthlySalary / user.monthlyHours
-      const sessionCount = Math.floor(Math.random() * 8) + 3 // 3 à 10 sessions
+      const sessionCount = Math.floor(Math.random() * 400) + 3 // 3 à 10 sessions
 
       for (let i = 0; i < sessionCount; i++) {
         const randomDay = Math.floor(Math.random() * 30)
