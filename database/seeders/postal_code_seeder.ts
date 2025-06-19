@@ -7,7 +7,7 @@ export default class extends BaseSeeder {
     const data = JSON.parse(fs.readFileSync('codes_postaux.json', 'utf-8'))
 
     await PostalCode.createMany(
-      data.map((item) => ({
+      data.map((item: { Code_postal: any; Nom_de_la_commune: any }) => ({
         codePostal: item.Code_postal,
         nomCommune: item.Nom_de_la_commune,
       }))

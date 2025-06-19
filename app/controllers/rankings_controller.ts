@@ -14,10 +14,10 @@ export default class RankingController {
 
     console.log('User:', user)
 
-    const formatUser = (user, total) => ({
-      pseudo: user.username,
+    const formatUser = (u: User, total: number) => ({
+      pseudo: u.username,
       earned: total,
-      id: user.id,
+      id: u.id,
     })
 
     const calculateTotalEarned = async (userId: number) => {
