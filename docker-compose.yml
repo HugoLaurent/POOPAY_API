@@ -53,14 +53,7 @@ services:
     networks:
       - my-network
 
-volumes:
-  pgdata:
-
-networks:
-  my-network:
-    driver: bridge
-
-migrator:
+  migrator:
   build:
     context: .
   container_name: migrator
@@ -69,3 +62,10 @@ migrator:
     - db
   networks:
     - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  my-network:
+    driver: bridge
