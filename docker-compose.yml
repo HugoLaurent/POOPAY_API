@@ -57,7 +57,7 @@ services:
     build:
       context: .
     container_name: migrator
-    command: sh -c "node ace migration:run && node ace db:seed"
+    command: sh -c "node bin/console migration:run && node bin/console db:seed"
     depends_on:
       - db
     networks:
