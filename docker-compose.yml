@@ -1,7 +1,8 @@
 services:
   api:
     build: .
-    dns: 8.8.8.8  # Add this line
+
+    dns: 8.8.8.8 # Add this line
     ports:
       - '3333:3333'
     volumes:
@@ -13,6 +14,8 @@ services:
     depends_on:
       - db
     environment:
+      - APP_KEY=JFWXVaJ6JA_os9d9nXFlm0sYDza-Z_Wn
+      - LOG_LEVEL=info
       - NODE_ENV=development
       - HOST=0.0.0.0
       - PORT=3333
@@ -33,7 +36,7 @@ services:
     container_name: db
     networks:
       - my-network
-    command: ["postgres", "-c", "listen_addresses=*"]
+    command: ['postgres', '-c', 'listen_addresses=*']
     environment:
       POSTGRES_USER: adonis
       POSTGRES_HOST_AUTH_METHOD: trust
