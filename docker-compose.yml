@@ -59,3 +59,13 @@ volumes:
 networks:
   my-network:
     driver: bridge
+
+migrator:
+  build:
+    context: .
+  container_name: migrator
+  command: sh -c "node ace migration:run && node ace db:seed"
+  depends_on:
+    - db
+  networks:
+    - app-network
