@@ -25,8 +25,7 @@ RUN npm ci --omit=dev
 # Copie uniquement le build transpilé
 COPY --from=build /app/build ./build
 
-# Copie autres fichiers nécessaires (env, configs, etc.)
-COPY .env ./
+
 
 EXPOSE 8080
 
