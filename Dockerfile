@@ -11,4 +11,4 @@ RUN npm install
 EXPOSE 3333
 
 # Lancement en mode dev (hot reload)
-CMD ["node", "ace", "serve", "--watch"]
+CMD ["node", "ace", "build"]
