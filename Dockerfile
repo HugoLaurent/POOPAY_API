@@ -1,29 +1,34 @@
+# Étape de base commune
 FROM node:22.16.0-alpine3.22 AS base
-
-# All deps stage
-FROM base AS deps
 WORKDIR /app
-ADD package.json package-lock.json ./
+
+# Étape d'installation des dépendances (avec devDeps pour builder)
+FROM base AS deps
+COPY package.json package-lock.json ./
 RUN npm ci
 
-# Production only deps stage
-FROM base AS production-deps
-WORKDIR /app
-ADD package.json package-lock.json ./
-RUN npm ci --omit=dev
-
-# Build stage
+# Étape de build
 FROM base AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules /app/node_modules
-ADD . .
-RUN node ace build
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
 
-# Production stage
-FROM base
+# Étape de production : uniquement le nécessaire
+FROM base AS production
 ENV NODE_ENV=production
 WORKDIR /app
-COPY --from=production-deps /app/node_modules /app/node_modules
-COPY --from=build /app/build /app
+
+# Copie les modules sans les devDeps
+COPY --from=deps /app/package.json /app/package-lock.json ./
+RUN npm ci --omit=dev
+
+# Copie uniquement le build transpilé
+COPY --from=build /app/build ./build
+
+# Copie autres fichiers nécessaires (env, configs, etc.)
+COPY .env ./
+
 EXPOSE 8080
-CMD ["node", "./bin/server.ts"]
+
+# Lancer le JS transpilé
+CMD ["node", "build/server.js"]
