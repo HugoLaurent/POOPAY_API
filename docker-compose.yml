@@ -57,7 +57,7 @@ services:
     build:
       context: .
     container_name: migrator
-    command: sh -c "node bin/console migration:run && node bin/console db:seed"
+    command: sh -c "node build/bin/console.js migration:run && node build/bin/console.js db:seed"
     depends_on:
       - db
     networks:
