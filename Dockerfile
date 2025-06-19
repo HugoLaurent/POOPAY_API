@@ -18,12 +18,14 @@ FROM base AS production
 ENV NODE_ENV=production
 WORKDIR /app
 
+
 # Copie les modules sans les devDeps
 COPY --from=deps /app/package.json /app/package-lock.json ./
 RUN npm ci --omit=dev
 
 # Copie uniquement le build transpilé
 COPY --from=build /app/build ./build
+COPY .env .env
 
 
 
