@@ -30,4 +30,4 @@ COPY --from=build /app/build ./build
 EXPOSE 8080
 
 # Lancer le JS transpilé
-CMD ["node", "build/server.js"]
+CMD ["node", "build/bin/server.js"]
