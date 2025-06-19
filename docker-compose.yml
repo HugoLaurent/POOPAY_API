@@ -26,7 +26,6 @@ services:
       - DB_PASSWORD=secret
       - DB_DATABASE=adonis_app
       - CHOKIDAR_USEPOLLING=true
-    command: ['node', 'ace', 'serve', '--watch']
 
   db:
     image: postgres:17
