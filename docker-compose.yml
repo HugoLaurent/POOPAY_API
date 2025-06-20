@@ -1,14 +1,9 @@
-version: '3.9'
-
 services:
   api:
     build: .
     dns: 8.8.8.8
     ports:
       - '3333:3333'
-    volumes:
-      - .:/app
-      - /app/node_modules
     container_name: api
     networks:
       - my-network
@@ -26,7 +21,6 @@ services:
       - DB_USER=adonis
       - DB_PASSWORD=secret
       - DB_DATABASE=adonis_app
-      - CHOKIDAR_USEPOLLING=true
 
   db:
     image: postgres:17
@@ -50,16 +44,6 @@ services:
     ports:
       - '8080:8080'
     container_name: adminer
-    networks:
-      - my-network
-
-  migrator:
-    build:
-      context: .
-    container_name: migrator
-    command: sh -c "node build/bin/console.js migration:run && node build/bin/console.js db:seed"
-    depends_on:
-      - db
     networks:
       - my-network
 
